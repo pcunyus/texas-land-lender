@@ -80,3 +80,42 @@ Each feed is evaluated on the 8-dimension scoring model (see scoring-model.md):
 - Filtered content is scored via Viroscope (see viroscope-workflow.md)
 - Approved content flows to Snippet Engine (see snippet-engine.md)
 - Final distribution via GHL (see ghl-distribution.md)
+
+
+---
+
+## GHL RSS Activation Status — 2026-06-13
+
+### Confirmed Active (GHL Social Planner)
+
+| Feed | URL | Status | Pillar |
+|------|-----|--------|--------|
+| HousingWire | https://www.housingwire.com/feed/ | ✅ ACTIVE | Industry News |
+| Mortgage News Daily | https://www.mortgagenewsdaily.com/rss/news | ✅ ACTIVE | Industry News / Rate Watch |
+| Inman | https://www.inman.com/feed/ | ✅ ACTIVE | Industry News |
+
+### GHL RSS Validator — BLOCKED (404 from GHL server-side fetch)
+
+The following feeds were tested and rejected by GHL's live HTTP validator.
+Root cause: GHL's RSS fetch server is blocked by Cloudflare/bot protection on these domains.
+Action required: Manual addition via browser session or use a feed proxy service.
+
+| Feed | URL Tested | Notes |
+|------|-----------|-------|
+| National Mortgage News | https://www.nationalmortgagenews.com/rss.xml | 404 — Cloudflare blocked |
+| NAR Research | https://www.nar.realtor/research-and-statistics/rss | 404 — Redirect/bot block |
+| Calculated Risk | https://www.calculatedriskblog.com/feeds/posts/default | 404 |
+| CFPB Blog | https://www.consumerfinance.gov/about-us/blog/feed/ | 404 |
+| Bankrate Mortgages | https://www.bankrate.com/mortgages/rss/ | 404 |
+| HUD News Releases | https://www.hud.gov/rss/newsreleases.xml | 404 |
+| Freddie Mac PMMS | https://www.freddie.mac.com/pmss/rss | 404 |
+| MND Rates Feed | https://www.mortgagenewsdaily.com/rss/rates | 404 |
+| AgWeb | https://www.agweb.com/rss/news | 404 |
+| DSNews | https://dsnews.com/feed/ | 404 |
+| Realtor.com Advice | https://www.realtor.com/advice/feed/ | 404 |
+| The Real Deal | https://therealdeal.com/feed/ | 404 |
+
+### Next Action
+- Resolve 4th+ feed: Use a feed proxy (e.g., RSS.app or Feedburner relay) or contact GHL support
+- Candidate: https://rss.app/ relay for National Mortgage News or CFPB
+- Required count: 4+ active feeds; currently at 3
