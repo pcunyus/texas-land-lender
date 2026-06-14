@@ -60,9 +60,9 @@ jobs:
         # that liveboat expects (added in newsboat 2.29+).
         run: |
           sqlite3 ~/.newsboat/cache.db <<EOF
-          ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';
-          ALTER TABLE rss_item ADD COLUMN enclosure_description_mime_type VARCHAR(128) NOT NULL DEFAULT '';
-          EOF
+ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';
+ALTER TABLE rss_item ADD COLUMN enclosure_description_mime_type VARCHAR(128) NOT NULL DEFAULT '';
+EOF
 
       - name: Generate liveboat static site
         run: |
@@ -72,6 +72,13 @@ jobs:
             --url-file ~/.newsboat/urls \
             --cache-file ~/.newsboat/cache.db \
             $GITHUB_WORKSPACE/docs
+
+      - name: Patch site_path in generated HTML for GitHub Pages subtree
+        # The liveboat template renders sitePath as '/' by default.
+        # For GitHub Pages projects at pcunyus.github.io/texas-land-lender/,
+        # the sitePath must be '/texas-land-lender/' so feed fetch URLs resolve correctly.
+        run: |
+          sed -i "s|window\.sitePath = '/'|window.sitePath = '/texas-land-lender/'|g" $GITHUB_WORKSPACE/docs/index.html
 
       - name: Commit and push docs
         run: |
