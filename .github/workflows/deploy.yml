@@ -29,7 +29,7 @@ jobs:
       - name: Install newsboat and liveboat
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y newsboat
+          sudo apt-get install -y sqlite3 newsboat
           curl -sSL -o /usr/local/bin/liveboat \
             https://github.com/exaroth/liveboat/releases/latest/download/liveboat-linux-gnu
           sudo chmod +x /usr/local/bin/liveboat
@@ -49,6 +49,17 @@ jobs:
       - name: Fetch RSS feeds
         run: |
           newsboat -x reload
+
+      - name: Patch newsboat cache.db for liveboat compatibility
+        # Ubuntu 22.04 ships with newsboat 2.21, which lacks the
+        # enclosure_description and enclosure_description_mime_type columns
+        # that liveboat expects (added in newsboat 2.29+).
+        # We add them here so liveboat's SQL query succeeds.
+        run: |
+          sqlite3 ~/.newsboat/cache.db <<EOF
+          ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';
+          ALTER TABLE rss_item ADD COLUMN enclosure_description_mime_type VARCHAR(128) NOT NULL DEFAULT '';
+          EOF
 
       - name: Generate liveboat static site
         run: |
