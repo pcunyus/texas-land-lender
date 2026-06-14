@@ -47,9 +47,13 @@ jobs:
         run: |
           newsboat -x reload -c ~/.newsboat/cache.db -u ~/.newsboat/urls
 
-      - name: Generate liveboat static site
+      - name: Initialize liveboat
         run: |
           mkdir -p $GITHUB_WORKSPACE/docs
+          liveboat -x init $GITHUB_WORKSPACE/docs
+
+      - name: Generate liveboat static site
+        run: |
           liveboat \
             --cache-file ~/.newsboat/cache.db \
             --url-file ~/.newsboat/urls \
