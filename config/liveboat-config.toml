@@ -7,15 +7,20 @@ description = "Automated RSS intelligence feed for Texas land lending and real e
 author = "FSCAP Intelligence Hub"
 language = "en"
 site_path = "/texas-land-lender/"
+site_url = "https://pcunyus.github.io/texas-land-lender/"
+time_threshold = 7
+show_read_articles = true
 
 [paths]
-newsboat_db = "~/.newsboat/cache.db"
-output_dir = "docs"
+newsboat_db = "./cache.db"
+newsboat_urls_file = "./config/urls"
+newsboat_cache_file = "./cache.db"
+build_dir = "./docs"
 
 [build]
 items_per_feed = 20
 max_age_days = 30
-show_read_items = false
+show_read_items = true
 
 [theme]
 name = "default"
