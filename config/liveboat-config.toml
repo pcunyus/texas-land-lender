@@ -6,6 +6,7 @@ title = "FSCAP Intelligence Hub"
 description = "Automated RSS intelligence feed for Texas land lending and real estate"
 author = "FSCAP Intelligence Hub"
 language = "en"
+site_path = "/texas-land-lender/"
 
 [paths]
 newsboat_db = "~/.newsboat/cache.db"
