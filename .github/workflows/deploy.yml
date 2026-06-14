@@ -30,34 +30,37 @@ jobs:
 
       - name: Install newsboat and liveboat
         run: |
+          sudo add-apt-repository universe -y
           sudo apt-get update -qq
           sudo apt-get install -y newsboat
-          curl -sSL https://github.com/TheBiggerGuy/liveboat/releases/latest/download/liveboat-x86_64-unknown-linux-gnu.tar.gz \
-            | tar xz -C /usr/local/bin/ liveboat
-          liveboat --version
+          sudo wget -q -O /usr/local/bin/liveboat https://github.com/exaroth/liveboat/releases/download/stable/liveboat-linux-musl
+          sudo chmod +x /usr/local/bin/liveboat
 
       - name: Create newsboat config directories
         run: |
           mkdir -p ~/.newsboat
-          cp config/urls ~/.newsboat/urls
           cp config/newsboat-config ~/.newsboat/config
+          cp config/urls ~/.newsboat/urls
 
       - name: Fetch RSS feeds
         run: |
-          newsboat -x reload
-        continue-on-error: true
+          newsboat -x reload --cache-file /tmp/newsboat-cache.db
 
       - name: Generate liveboat static site
         run: |
           mkdir -p docs
           liveboat \
             --config config/liveboat-config.toml \
+            --page-opts config/page_options \
+            --cache /tmp/newsboat-cache.db \
             --output docs
 
       - name: Commit and push docs
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add docs/
-          git diff --staged --quiet || git commit -m "chore: liveboat feed build $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git diff --staged --quiet || git commit -m 'chore: update liveboat feed build'
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
