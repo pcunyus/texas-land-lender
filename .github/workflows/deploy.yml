@@ -43,7 +43,7 @@ jobs:
 
       - name: Fetch RSS feeds
         run: |
-          newsboat -x reload --cache-file /tmp/newsboat-cache.db
+          newsboat -x reload -c /tmp/newsboat-cache.db -u ~/.newsboat/urls
 
       - name: Generate liveboat static site
         run: |
