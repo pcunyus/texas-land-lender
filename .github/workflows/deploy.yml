@@ -35,10 +35,14 @@ jobs:
           sudo chmod +x /usr/local/bin/liveboat
 
       - name: Set up liveboat templates
+        # Clone from liveboat-github-runner which has the correct template layout
+        # (templates/default/ contains config.toml, index.hbs, include/ directly)
         run: |
+          git clone --depth=1 https://github.com/exaroth/liveboat-github-runner.git /tmp/liveboat-runner
           mkdir -p ~/.config/liveboat/templates
-          git clone --depth=1 --branch=develop https://github.com/exaroth/liveboat.git /tmp/liveboat
-          cp -r /tmp/liveboat/templates/default ~/.config/liveboat/templates/
+          cp -r /tmp/liveboat-runner/templates/default ~/.config/liveboat/templates/
+          # Also copy assets directory from the runner repo
+          cp -r /tmp/liveboat-runner/assets ~/.config/liveboat/
 
       - name: Create newsboat config directories
         run: |
@@ -54,7 +58,6 @@ jobs:
         # Ubuntu 22.04 ships with newsboat 2.21, which lacks the
         # enclosure_description and enclosure_description_mime_type columns
         # that liveboat expects (added in newsboat 2.29+).
-        # We add them here so liveboat's SQL query succeeds.
         run: |
           sqlite3 ~/.newsboat/cache.db <<EOF
           ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';
