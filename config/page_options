@@ -1,0 +1,14 @@
+# FSCAP Intelligence Hub - Liveboat Page Options
+# MIT License | FSCAP Intelligence Hub
+# Controls the static page generation options
+
+page_title=FSCAP Intelligence Hub
+page_description=Real-time RSS intelligence for Texas land lending
+page_author=FSCAP Intelligence Hub
+page_language=en
+feed_limit=20
+article_limit=50
+show_timestamps=true
+show_feed_icons=true
+date_format=%Y-%m-%d
+theme=default
