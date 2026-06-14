@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,7 +30,6 @@ jobs:
 
       - name: Install newsboat and liveboat
         run: |
-          sudo add-apt-repository universe -y
           sudo apt-get update -qq
           sudo apt-get install -y newsboat
           sudo wget -q -O /usr/local/bin/liveboat https://github.com/exaroth/liveboat/releases/download/stable/liveboat-linux-musl
