@@ -35,13 +35,10 @@ jobs:
           sudo chmod +x /usr/local/bin/liveboat
 
       - name: Set up liveboat templates
-        # Clone from liveboat-github-runner which has the correct template layout
-        # (templates/default/ contains config.toml, index.hbs, include/ directly)
         run: |
           git clone --depth=1 https://github.com/exaroth/liveboat-github-runner.git /tmp/liveboat-runner
           mkdir -p ~/.config/liveboat/templates
           cp -r /tmp/liveboat-runner/templates/default ~/.config/liveboat/templates/
-          # Also copy assets directory from the runner repo
           cp -r /tmp/liveboat-runner/assets ~/.config/liveboat/
 
       - name: Create newsboat config directories
@@ -55,14 +52,11 @@ jobs:
           newsboat -x reload
 
       - name: Patch newsboat cache.db for liveboat compatibility
-        # Ubuntu 22.04 ships with newsboat 2.21, which lacks the
-        # enclosure_description and enclosure_description_mime_type columns
-        # that liveboat expects (added in newsboat 2.29+).
         run: |
-          sqlite3 ~/.newsboat/cache.db <<EOF
-ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';
-ALTER TABLE rss_item ADD COLUMN enclosure_description_mime_type VARCHAR(128) NOT NULL DEFAULT '';
-EOF
+          sqlite3 ~/.newsboat/cache.db \
+            "ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';" 
+          sqlite3 ~/.newsboat/cache.db \
+            "ALTER TABLE rss_item ADD COLUMN enclosure_description_mime_type VARCHAR(128) NOT NULL DEFAULT '';"
 
       - name: Generate liveboat static site
         run: |
@@ -74,11 +68,8 @@ EOF
             $GITHUB_WORKSPACE/docs
 
       - name: Patch site_path in generated HTML for GitHub Pages subtree
-        # The liveboat template renders sitePath as '/' by default.
-        # For GitHub Pages projects at pcunyus.github.io/texas-land-lender/,
-        # the sitePath must be '/texas-land-lender/' so feed fetch URLs resolve correctly.
         run: |
-          sed -i "s|window\.sitePath = '/'|window.sitePath = '/texas-land-lender/'|g" $GITHUB_WORKSPACE/docs/index.html
+          sed -i "s|window.sitePath = '/'|window.sitePath = '/texas-land-lender/'|g" $GITHUB_WORKSPACE/docs/index.html
 
       - name: Commit and push docs
         run: |
