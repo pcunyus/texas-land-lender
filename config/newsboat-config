@@ -1,0 +1,21 @@
+# FSCAP Intelligence Hub - Newsboat Configuration
+# MIT License | FSCAP Intelligence Hub
+
+# Auto-reload interval (minutes)
+auto-reload yes
+reload-time 360
+
+# Display settings
+show-read-feeds yes
+show-read-articles yes
+
+# Cache settings
+max-items 100
+
+# Download settings
+download-retries 3
+download-timeout 30
+
+# Logging
+log-level 3
+log-file /tmp/newsboat.log
