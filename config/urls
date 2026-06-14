@@ -1,11 +1,41 @@
-# FSCAP Intelligence Hub - Newsboat URL List
-# RSS feeds for Texas land lending and real estate intelligence
+# FSCAP Intelligence Hub — Feed URL Master List
 
-https://feeds.feedburner.com/trerc "~Texas Real Estate Research Center"
-https://www.rocketmortgage.com/resources/rss "~Rocket Mortgage News"
-https://www.nerdwallet.com/blog/mortgages/feed/ "~NerdWallet Mortgages"
+# === INDUSTRY NEWS ===
 https://www.housingwire.com/feed/ "~HousingWire"
+https://www.inman.com/feed/ "~Inman"
+https://www.mortgagenewsdaily.com/rss/news "~Mortgage News Daily"
 https://calculatedriskblog.com/feeds/posts/default "~Calculated Risk"
-https://realestate.usnews.com/rss/real-estate "~US News Real Estate"
-https://www.inman.com/feed/ "~Inman News"
-https://feeds.feedblitz.com/mbaa-newslink "~MBA NewsLink"
+https://dsnews.com/feed/ "~DS News"
+https://nationalmortgageprofessional.com/feed "~National Mortgage Professional"
+https://www.nationalmortgagenews.com/rss.xml "~National Mortgage News"
+
+# === MORTGAGE EDUCATION / CONSUMER ===
+https://themortgagereports.com/feed "~The Mortgage Reports"
+https://www.thetruthaboutmortgage.com/feed/ "~The Truth About Mortgage"
+https://www.investopedia.com/rss/investopedia-general.rss "~Investopedia"
+https://www.consumerfinance.gov/about-us/blog/feed/ "~CFPB Blog"
+
+# === TEXAS / REGIONAL REAL ESTATE ===
+https://trerc.tamu.edu/blog/feed/ "~TRERC Texas RE Blog"
+https://trerc.tamu.edu/feed/ "~TRERC All Content"
+https://magazine.realtor/rss "~REALTOR Magazine"
+https://therealdeal.com/feed/ "~The Real Deal"
+
+# === LAND / FARM / RURAL ===
+https://www.farmjournal.com/rss/ "~Farm Journal"
+https://www.agweb.com/rss/news "~AgWeb"
+https://www.dtnpf.com/agriculture/web/ag/news/rss "~DTN Progressive Farmer"
+https://www.progressivefarmer.com/rss/ "~Progressive Farmer"
+
+# === GOVERNMENT / RURAL PROGRAMS ===
+https://www.rd.usda.gov/rss.xml "~USDA Rural Development"
+https://www.usda.gov/rss/home.xml "~USDA News"
+
+# === RATES / ECONOMICS ===
+https://hnrss.org/newest?q=mortgage+rate "~HN: Mortgage Rates"
+https://hnrss.org/newest?q=rural+lending "~HN: Rural Lending"
+https://hnrss.org/newest?q=land+loan "~HN: Land Loans"
+
+# === REAL ESTATE / INVESTING ===
+https://www.biggerpockets.com/blog/feed "~BiggerPockets"
+https://www.worldpropertyjournal.com/real-estate-news/rss.php "~World Property Journal"
