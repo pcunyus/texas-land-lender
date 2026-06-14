@@ -3,6 +3,7 @@
 # Task 4: Liveboat Deployment Verification
 # Deploys Vite/React app to GitHub Pages on push to main
 # STOP CONDITION: Draft-only for RSS/templates; no auto-publish of content
+# Fix v2: switched from npm ci to bun (repo uses bun.lockb)
 
 name: Deploy to GitHub Pages
 
@@ -28,17 +29,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20'
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install
 
       - name: Build
-        run: npm run build
+        run: bun run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
