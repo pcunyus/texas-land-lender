@@ -1,60 +1,63 @@
-# FSCAP Intelligence Hub - Liveboat Deployment
+# FSCAP Intelligence Hub - Liveboat Feed Build
 # MIT License | FSCAP Intelligence Hub
 # Task 4: Liveboat Deployment Verification
-# Deploys Vite/React app to GitHub Pages on push to main
-# STOP CONDITION: Draft-only for RSS/templates; no auto-publish of content
-# Fix v2: switched from npm ci to bun (repo uses bun.lockb)
+# Runs newsboat + liveboat to generate static HTML feed reader
+# Deploys output to GitHub Pages from /docs on main branch
 
-name: Deploy to GitHub Pages
+name: FSCAP Intelligence Hub - Feed Build
 
 on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: bun install
+      - name: Install newsboat and liveboat
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y newsboat
+          curl -sSL https://github.com/TheBiggerGuy/liveboat/releases/latest/download/liveboat-x86_64-unknown-linux-gnu.tar.gz \
+            | tar xz -C /usr/local/bin/ liveboat
+          liveboat --version
 
-      - name: Build
-        run: bun run build
+      - name: Create newsboat config directories
+        run: |
+          mkdir -p ~/.newsboat
+          cp config/urls ~/.newsboat/urls
+          cp config/newsboat-config ~/.newsboat/config
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Fetch RSS feeds
+        run: |
+          newsboat -x reload
+        continue-on-error: true
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
+      - name: Generate liveboat static site
+        run: |
+          mkdir -p docs
+          liveboat \
+            --config config/liveboat-config.toml \
+            --output docs
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Commit and push docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --staged --quiet || git commit -m "chore: liveboat feed build $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
