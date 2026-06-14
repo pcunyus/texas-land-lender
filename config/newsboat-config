@@ -15,7 +15,3 @@ max-items 100
 # Download settings
 download-retries 3
 download-timeout 30
-
-# Logging
-log-level 3
-log-file /tmp/newsboat.log
