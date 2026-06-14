@@ -1,0 +1,20 @@
+# FSCAP Intelligence Hub - Liveboat Configuration
+# MIT License | FSCAP Intelligence Hub
+
+[general]
+title = "FSCAP Intelligence Hub"
+description = "Automated RSS intelligence feed for Texas land lending and real estate"
+author = "FSCAP Intelligence Hub"
+language = "en"
+
+[paths]
+newsboat_db = "~/.newsboat/cache.db"
+output_dir = "docs"
+
+[build]
+items_per_feed = 20
+max_age_days = 30
+show_read_items = false
+
+[theme]
+name = "default"
