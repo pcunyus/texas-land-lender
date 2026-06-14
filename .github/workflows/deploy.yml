@@ -49,11 +49,11 @@ jobs:
       - name: Generate liveboat static site
         run: |
           mkdir -p $GITHUB_WORKSPACE/docs
-          liveboat build \
+          liveboat \
             --config-file $GITHUB_WORKSPACE/config/liveboat-config.toml \
             --url-file ~/.newsboat/urls \
             --cache-file ~/.newsboat/cache.db \
-            --output-path $GITHUB_WORKSPACE/docs
+            $GITHUB_WORKSPACE/docs
 
       - name: Commit and push docs
         run: |
