@@ -47,16 +47,16 @@ jobs:
           cp $GITHUB_WORKSPACE/config/newsboat-config ~/.newsboat/config
           cp $GITHUB_WORKSPACE/config/urls ~/.newsboat/urls
 
-      - name: Fetch RSS feeds
-        run: |
-          newsboat -x reload
-
       - name: Patch newsboat cache.db for liveboat compatibility
         run: |
           sqlite3 ~/.newsboat/cache.db \
-            "ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';" 
+            "ALTER TABLE rss_item ADD COLUMN enclosure_description VARCHAR(1024) NOT NULL DEFAULT '';"
           sqlite3 ~/.newsboat/cache.db \
             "ALTER TABLE rss_item ADD COLUMN enclosure_description_mime_type VARCHAR(128) NOT NULL DEFAULT '';"
+
+      - name: Fetch RSS feeds
+        run: |
+          newsboat -x reload
 
       - name: Generate liveboat static site
         run: |
@@ -67,9 +67,13 @@ jobs:
             --cache-file ~/.newsboat/cache.db \
             $GITHUB_WORKSPACE/docs
 
-      - name: Patch site_path in generated HTML for GitHub Pages subtree
+      - name: Patch generated HTML for GitHub Pages
         run: |
           sed -i "s|window.sitePath = '/'|window.sitePath = '/texas-land-lender/'|g" $GITHUB_WORKSPACE/docs/index.html
+          sed -i "s|window.pageTitle = 'Liveboat feed page'|window.pageTitle = 'FSCAP Intelligence Hub'|g" $GITHUB_WORKSPACE/docs/index.html
+          sed -i "s|<title>Liveboat feed page</title>|<title>FSCAP Intelligence Hub</title>|g" $GITHUB_WORKSPACE/docs/index.html
+          sed -i "s|content=\"Liveboat feed page\">|content=\"Automated RSS intelligence for Texas land lending and real estate\">|g" $GITHUB_WORKSPACE/docs/index.html
+          sed -i "s|content=\"Liveboat feed page\" name=\"apple-mobile-web-app-title\"|content=\"FSCAP Intelligence Hub\" name=\"apple-mobile-web-app-title\"|g" $GITHUB_WORKSPACE/docs/index.html
 
       - name: Commit and push docs
         run: |
