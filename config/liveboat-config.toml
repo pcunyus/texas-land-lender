@@ -8,7 +8,7 @@ author = "FSCAP Intelligence Hub"
 language = "en"
 site_path = "/texas-land-lender/"
 site_url = "https://pcunyus.github.io/texas-land-lender/"
-time_threshold = 7
+time_threshold = 30
 show_read_articles = true
 
 [paths]
