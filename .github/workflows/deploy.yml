@@ -47,11 +47,10 @@ jobs:
           cp $GITHUB_WORKSPACE/config/newsboat-config ~/.newsboat/config
           cp $GITHUB_WORKSPACE/config/urls ~/.newsboat/urls
 
-      - name: Fetch RSS feeds (verbose)
+      - name: Fetch RSS feeds
         run: |
-          echo "Fetching RSS feeds..."
-          newsboat -x reload -v 2>&1 | tee /tmp/newsboat.log
-          echo "\n--- Feed fetch complete ---"
+          newsboat -x reload
+          echo "Exit code: $?"
 
       - name: Patch newsboat cache.db for liveboat compatibility
         run: |
@@ -63,8 +62,11 @@ jobs:
 
       - name: Count fetched feeds
         run: |
-          echo "Feeds in cache.db:"
-          sqlite3 ~/.newsboat/cache.db "SELECT DISTINCT feedurl, COUNT(*) FROM rss_item GROUP BY feedurl ORDER BY COUNT(*) DESC;" 2>&1 || echo "Warning: rss_item table not found or empty"
+          echo "=== Feeds in cache.db ==="
+          sqlite3 ~/.newsboat/cache.db \
+            "SELECT DISTINCT feedurl, COUNT(*) as items FROM rss_item GROUP BY feedurl ORDER BY items DESC;" \
+            2>/dev/null || echo "No rss_item table found"
+          echo "========================"
 
       - name: Generate liveboat static site
         run: |
